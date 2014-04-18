@@ -121,6 +121,7 @@ func (ms *masterServer) Get(args *masterrpc.GetArgs, reply *masterrpc.GetReply) 
     fmt.Println("[MASTER] GET")
     if !ms.serverReady {
         reply.Status = masterrpc.NotReady
+        return errors.New("[MASTER] [ERROR] Not all workers have registered yet")
     }
     //TODO Find the appropriate worker, get. Possibly cache later.
     index := ms.hashToIndex(hashing.HashString(args.Key))
@@ -139,6 +140,7 @@ func (ms *masterServer) Put(args *masterrpc.PutArgs, reply *masterrpc.PutReply) 
     fmt.Println("[MASTER] PUT")
     if !ms.serverReady {
         reply.Status = masterrpc.NotReady
+        return errors.New("[MASTER] [ERROR] Not all workers have registered yet")
     }
     //TODO Find the appropriate worker, put. Possibly cache later.
     index := ms.hashToIndex(hashing.HashString(args.Key))
