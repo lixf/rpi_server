@@ -105,7 +105,7 @@ func (ms *masterServer) RegisterServer(args *masterrpc.RegisterArgs, reply *mast
     if len(ms.serversReadyMap) == ms.numNodes {
         reply.Status = masterrpc.OK
         if !ms.serverReady {
-            //TODO setup
+            //TODO Do we need to do anything else before letting the master take calls?
             fmt.Println("[MASTER] Ready: ", ms.servers)
             ms.serverReady = true
         }
@@ -153,3 +153,24 @@ func (ms *masterServer) Put(args *masterrpc.PutArgs, reply *masterrpc.PutReply) 
         return nil
     }
 }
+
+//TODO COMPUTE
+func (ms *masterServer) Compute(args *masterrpc.ComputeArgs, reply *masterrpc.ComputeReply) error {
+    fmt.Println("[MASTER] COMPUTE")
+    if !ms.serverReady {
+        reply.Status = masterrpc.NotReady
+        return errors.New("[MASTER] [ERROR] Not all workers have registered yet")
+    }
+    //TODO Find the appropriate worker, put. Possibly cache later.
+    index := ms.hashToIndex(hashing.HashString(args.Param))
+    cli := ms.connections[index]
+    wArgs := &workerrpc.ComputeArgs{Param: args.Param}
+    var wReply workerrpc.ComputeReply
+    if err := cli.Call("WorkerServer.Compute", wArgs, &wReply); err != nil {
+        return err
+    } else {
+        reply.Result = wReply.Result
+        return nil
+    }
+}
+

@@ -40,6 +40,15 @@ func dispPost(client client.RpiClient, key, value string) {
     fmt.Println("[CLIENT] [POST] Status: ", status)
 }
 
+//TODO COMPUTE
+func dispCompute(client client.RpiClient, arg string) {
+    fmt.Println("[CLIENT] [COMPUTE] arg: ", arg)
+    status, res, err := client.Compute(arg)
+    checkError(err)
+    fmt.Println("[CLIENT] [COMPUTE] Status: ", status, ", result: ", res)
+}
+
+
 func main() {
     //TODO Command line args
     flag.Parse()
@@ -56,6 +65,9 @@ func main() {
     dispPost(client, "hihi", "asdf")
     dispGet(client, "hihi")
     dispPost(client, "hihi", "aaaaaaaaaaaaaaaaaaa")
+
+    //TODO COMPUTE
+    dispCompute(client, "SCIENCE")
 }
 
 

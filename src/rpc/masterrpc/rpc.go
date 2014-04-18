@@ -4,6 +4,8 @@ type RemoteMasterServer interface {
     RegisterServer(*RegisterArgs, *RegisterReply) error
     Get(*GetArgs, *GetReply) error
     Put(*PutArgs, *PutReply) error
+    //TODO COMPUTE
+    Compute(*ComputeArgs, *ComputeReply) error
 }
 
 type MasterServer struct {

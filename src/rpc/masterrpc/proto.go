@@ -9,11 +9,6 @@ const (
     ItemNotFound
 )
 
-const (
-    QueryCacheSeconds = 10
-    QueryCacheThresh  = 3
-)
-
 type Node struct {
     HostPort string
     NodeID   uint32
@@ -53,4 +48,16 @@ type PutArgs struct {
 
 type PutReply struct {
     Status Status
+}
+
+//TODO COMPUTE
+type ComputeArgs struct {
+    //XXX
+    Param string
+}
+
+type ComputeReply struct {
+    Status Status
+    //XXX
+    Result string
 }

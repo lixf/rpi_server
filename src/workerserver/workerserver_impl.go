@@ -87,4 +87,14 @@ func (ws *workerServer) Put(args *workerrpc.PutArgs, reply *workerrpc.PutReply) 
     return nil
 }
 
+//TODO COMPUTE
+func (ws *workerServer) Compute(args *workerrpc.ComputeArgs, reply *workerrpc.ComputeReply) error {
+    fmt.Println("[WORKER] COMPUTE called")
+
+    reply.Result = args.Param + ", NOW WITH MORE COMPUTATION!"
+
+    reply.Status = workerrpc.OK
+    return nil
+}
+
 
