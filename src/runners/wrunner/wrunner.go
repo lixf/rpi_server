@@ -33,7 +33,8 @@ func main() {
         fmt.Println("Address: ", addrs[0])
     }
 
-    _, err = workerserver.NewWorkerServer(addrs[0] + ":" + defaultWorkerPort)
+    fmt.Println("[WORKER] Trying port: ", *port)
+    _, err = workerserver.NewWorkerServer(addrs[0] + ":" + *port)
     if err != nil {
         fmt.Println("[ERROR] Could not make worker server: ", err)
     }

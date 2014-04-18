@@ -3,6 +3,7 @@ package main
 import (
     "fmt"
     "flag"
+    "os"
     "rpc/ipaddrs"
     "masterserver"
 )
@@ -21,7 +22,7 @@ func main() {
     _, err := masterserver.NewMasterServer(*port, *numNodes)
     if err != nil {
         fmt.Println("[ERROR] Could not make master server")
+        os.Exit(1)
     }
-
     select {}
 }
