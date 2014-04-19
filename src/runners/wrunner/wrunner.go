@@ -24,21 +24,17 @@ func main() {
         fmt.Println("[ERROR]", err)
     } else {
         fmt.Println("Worker name: ", name)
-    /*}
+    }
+    /*
     addrs, err := net.LookupHost(name)
     if err != nil {
         fmt.Println("[ERROR]", err)
     } else {
         fmt.Println("Address: ", addrs[0])
-    }
-
-    fmt.Println("[WORKER] Trying port: ", *port)
-    _, err = workerserver.NewWorkerServer(addrs[0] + ":" + *port)
-    */
-    //hardcode worker
+    }*/
+    
     addr := "192.168.1.54"
     _, err = workerserver.NewWorkerServer(addr + ":" + defaultWorkerPort)
-
     if err != nil {
         fmt.Println("[ERROR] Could not make worker server: ", err)
     }
