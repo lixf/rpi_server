@@ -3,7 +3,6 @@ package main
 import (
     "fmt"
     "flag"
-    "net"
     "os"
     "workerserver"
     "rpc/ipaddrs"
@@ -25,7 +24,7 @@ func main() {
         fmt.Println("[ERROR]", err)
     } else {
         fmt.Println("Worker name: ", name)
-    }
+    /*}
     addrs, err := net.LookupHost(name)
     if err != nil {
         fmt.Println("[ERROR]", err)
@@ -35,6 +34,11 @@ func main() {
 
     fmt.Println("[WORKER] Trying port: ", *port)
     _, err = workerserver.NewWorkerServer(addrs[0] + ":" + *port)
+    */
+    //hardcode worker
+    addr := "192.168.1.54"
+    _, err = workerserver.NewWorkerServer(addr + ":" + defaultWorkerPort)
+
     if err != nil {
         fmt.Println("[ERROR] Could not make worker server: ", err)
     }
