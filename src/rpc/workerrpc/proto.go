@@ -54,10 +54,10 @@ type PutReply struct {
 //TODO COMPUTE
 //added hasing with salt
 type ComputeArgs struct{
-    job   string
-    salt  string
-    cost  int
-    key   string
+    Job   string
+    Salt  string
+    Cost  int
+    Key   string
 }
 type ComputeReply struct {
     Status Status
