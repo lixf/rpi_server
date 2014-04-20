@@ -3,7 +3,6 @@ package main
 import (
     "fmt"
     "flag"
-    "os"
     "workerserver"
     "rpc/ipaddrs"
 )
@@ -20,7 +19,7 @@ func main() {
     flag.Parse()
 
     addr := ipaddrs.DetermineIP()
-    _, err = workerserver.NewWorkerServer(addr + ":" + defaultWorkerPort)
+    _, err := workerserver.NewWorkerServer(addr + ":" + defaultWorkerPort)
     if err != nil {
         fmt.Println("[ERROR] Could not make worker server: ", err)
     }
