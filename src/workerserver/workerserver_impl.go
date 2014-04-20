@@ -11,7 +11,7 @@ import (
     "time"
     "fmt"
     "sync"
-    "code.google.com/p/go.crypto/bcrypt"//for hashing
+    "lib/go.crypto/bcrypt"//for hashing
 )
 
 type workerServer struct {
