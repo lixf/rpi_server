@@ -111,7 +111,7 @@ func (ws *workerServer) salt_hash (key string, salt string, cost int) error{
           ws.itemLock.Unlock()
           return err
         }
-
+    fmt.Println("h is ",h)
     ws.storageMap[key] = string(h)
     } else {
       ws.itemLock.Unlock()
