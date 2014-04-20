@@ -19,21 +19,7 @@ var (
 func main() {
     flag.Parse()
 
-    name, err := os.Hostname()
-    if err != nil {
-        fmt.Println("[ERROR]", err)
-    } else {
-        fmt.Println("Worker name: ", name)
-    }
-    /*
-    addrs, err := net.LookupHost(name)
-    if err != nil {
-        fmt.Println("[ERROR]", err)
-    } else {
-        fmt.Println("Address: ", addrs[0])
-    }*/
-    
-    addr := "192.168.1.54"
+    addr := ipaddrs.DetermineIP()
     _, err = workerserver.NewWorkerServer(addr + ":" + defaultWorkerPort)
     if err != nil {
         fmt.Println("[ERROR] Could not make worker server: ", err)
