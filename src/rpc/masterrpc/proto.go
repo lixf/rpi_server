@@ -51,13 +51,14 @@ type PutReply struct {
 }
 
 //TODO COMPUTE
-type ComputeArgs struct {
-    //XXX
-    Param string
+//added hasing with salt
+type ComputeArgs struct{
+    Job   string
+    Salt  string
+    Cost  int
+    Key   string
 }
-
 type ComputeReply struct {
     Status Status
-    //XXX
     Result string
 }
