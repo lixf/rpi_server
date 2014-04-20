@@ -35,8 +35,8 @@ func (rc *rpiClient) Put(key, value string) (masterrpc.Status, error) {
     return reply.Status, nil
 }
 
-func (rc *rpiClient) Compute(arg string) (masterrpc.Status, string, error){
-    args := &masterrpc.ComputeArgs{Param: arg}
+func (rc *rpiClient) Compute(job string, key string, salt string, cost int) (masterrpc.Status, string, error){
+    args := &masterrpc.ComputeArgs{Job: job, Key: key, Salt: salt, Cost: cost}
     var reply masterrpc.ComputeReply
     //TODO COMPUTE: Pass real arguments, get a real response
     if err := rc.client.Call("MasterServer.Compute", args, &reply); err != nil {

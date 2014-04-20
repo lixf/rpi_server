@@ -162,9 +162,9 @@ func (ms *masterServer) Compute(args *masterrpc.ComputeArgs, reply *masterrpc.Co
         return errors.New("[MASTER] [ERROR] Not all workers have registered yet")
     }
     //TODO Find the appropriate worker, put. Possibly cache later.
-    index := ms.hashToIndex(hashing.HashString(args.Param))
+    index := ms.hashToIndex(hashing.HashString(args.Key))
     cli := ms.connections[index]
-    wArgs := &workerrpc.ComputeArgs{Param: args.Param}
+    wArgs := &workerrpc.ComputeArgs{Key: args.Key,Salt: args.Salt,Job: args.Job,Cost: args.Cost}
     var wReply workerrpc.ComputeReply
     if err := cli.Call("WorkerServer.Compute", wArgs, &wReply); err != nil {
         return err

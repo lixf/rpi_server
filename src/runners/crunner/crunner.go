@@ -67,6 +67,6 @@ func main() {
     dispPost(client, "hihi", "aaaaaaaaaaaaaaaaaaa")
 
     //TODO COMPUTE
-    dispCompute(client, "SCIENCE")
+    dispCompute(client, "hash","hihi","salt",1)
 }
 
