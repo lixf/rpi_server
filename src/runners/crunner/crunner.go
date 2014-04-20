@@ -18,7 +18,7 @@ var test string
 var time int
 func init() {
     const (
-        defaultTest = "defalt.txt"
+        defaultTest = "default.txt"
         usageTest = "--benchmark  -b : give benchmark files"
         defaultTime = 0
         usageTime = "--time       -t : display timing information"
@@ -68,11 +68,14 @@ func sendReq(client client.RpiClient, requests []string) error {
         fields := strings.Split(req," ")
         cmd := fields[0]
         if strings.Contains(cmd,"COMPUTE") {
-            //parse to a int64
-            cost,err := strconv.ParseInt(fields[4],10,32)
+            //Parse the appropriate parameters of a compute job.
+            jobType := fields[1]
+            key := fields[2]
+            salt := fields[3]
+            cost,err := strconv.ParseInt(fields[4],10,0)
             checkError(err)
             //job,key,salt,cost
-            dispCompute(client,fields[1],fields[2],fields[3],int(cost))
+            dispCompute(client, jobType, key, salt, int(cost))
         } else if strings.Contains(cmd,"GET") {
             //key
             dispGet(client,fields[1])
@@ -104,16 +107,19 @@ func main() {
     data, ioErr := ioutil.ReadFile(test)
     checkError(ioErr)
 
-    fmt.Println("parsing...")
-
+    fmt.Println("[CLIENT] parsing...")
     //do a split on newline to find requests
     requests := strings.Split(string(data),"\n")
+    fmt.Println("[CLIENT] ... parsing finished.")
 
     //network code starts here
+    fmt.Println("[CLIENT] Being created")
     client, err := client.NewClient(ipaddrs.MasterServerHostPort)
     checkError(err)
+    fmt.Println("[CLIENT] Created successfully")
 
     //just parse and send the requests now
+    fmt.Println("[CLIENT] Sending requests")
     sErr := sendReq(client,requests)
     checkError(sErr)
 

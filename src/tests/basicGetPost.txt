@@ -1,0 +1,6 @@
+GET key1
+POST key1 val1
+GET key1
+POST key2 val2
+GET key1
+GET key2
