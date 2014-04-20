@@ -88,14 +88,49 @@ func (ws *workerServer) Put(args *workerrpc.PutArgs, reply *workerrpc.PutReply) 
     return nil
 }
 
-//TODO COMPUTE
+
+
+///////////COMPUTE//////////////
+//functionalities:
+//1. hasing with salt
+func salt_hash (key string, salt string, cost int) error{
+    //take the lock on the storage
+    //we could also make a new table to prevent messing up 
+    //hased with unhashed values
+    ws.itemLock.Lock()
+    val, present := ws.storageMap[args.Key]
+    if present {
+        //use this val to do computation uses bcrypt
+        salted = val + salt
+        //this function takes n as the cost for the hashing
+        h, err := bcrypt.GenerateFromPassword(salted,n)
+        //check error and then put the hash back
+        if err != nil {
+          ws.itemLock.Unlock()
+          return err
+        }
+
+    ws.storageMap[args.Key] = h
+    } else {
+      ws.itemLock.Unlock()
+      return workerrpc.ItemNotFound
+    }
+    //unlock here
+    ws.itemLock.Unlock()
+    return nil
+}
+
+
+//2. GPU image rendering
+//3. compute prime
+
+
+
 func (ws *workerServer) Compute(args *workerrpc.ComputeArgs, reply *workerrpc.ComputeReply) error {
     fmt.Println("[WORKER] COMPUTE called")
 
     //right now it's just a hash with the looked up value
     //simulating a password hashing with salt
-    //
-    //TODO need to expand the args to contain the following
     job = args.job
     n = args.cost
     salt = args.salt
@@ -103,30 +138,14 @@ func (ws *workerServer) Compute(args *workerrpc.ComputeArgs, reply *workerrpc.Co
     //first check for types of job
     if strings.EqualFold(job,"hashing"){
       //looking up value same as in GET
-      ws.itemLock.Lock()
-      val, present := ws.storageMap[args.Key]
-      if present {
-          //use this val to do computation uses bcrypt
-          salted = val + salt
-          //this function takes n as the cost for the hashing
-          h, err := bcrypt.GenerateFromPassword(salted,n)
-          //check error and then put the hash back
-          if err != nil {
-            reply.Status = "encryption failed"
-            return err
-          }
-          ws.storageMap[args.Key] = args.Value
-
-          //generally should not return the hash
-          //but we are only testing
-          reply.Result = h
-          reply.Status = workerrpc.OK
-
-      } else {
-          reply.Status = workerrpc.ItemNotFound
-          return nil
+      hash_err := salt_hash (args.key,salt,n)
+      if hash_err != nil {
+        return hash_err
       }
-      ws.itemLock.Unlock()
+      //generally should not return the hash
+      //but we are only testing
+      reply.Result = h
+      reply.Status = workerrpc.OK
       return nil
 
     } else {
