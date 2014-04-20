@@ -8,10 +8,12 @@ import (
     "net/http"
     "net/rpc"
     "hashing"
+    "strings"
     "time"
     "fmt"
     "sync"
-    "lib/go.crypto/bcrypt"//for hashing
+    "errors"
+    "lib/code.google.com/p/go.crypto/bcrypt"//for hashing
 )
 
 type workerServer struct {
@@ -93,27 +95,28 @@ func (ws *workerServer) Put(args *workerrpc.PutArgs, reply *workerrpc.PutReply) 
 ///////////COMPUTE//////////////
 //functionalities:
 //1. hasing with salt
-func salt_hash (key string, salt string, cost int) error{
+func (ws *workerServer) salt_hash (key string, salt string, cost int) error{
     //take the lock on the storage
     //we could also make a new table to prevent messing up 
     //hased with unhashed values
     ws.itemLock.Lock()
-    val, present := ws.storageMap[args.Key]
+    val, present := ws.storageMap[key]
     if present {
         //use this val to do computation uses bcrypt
-        salted = val + salt
+        salted := []byte(val + salt)
         //this function takes n as the cost for the hashing
-        h, err := bcrypt.GenerateFromPassword(salted,n)
+        h, err := bcrypt.GenerateFromPassword(salted,cost)
         //check error and then put the hash back
         if err != nil {
           ws.itemLock.Unlock()
           return err
         }
 
-    ws.storageMap[args.Key] = h
+    ws.storageMap[key] = string(h)
     } else {
       ws.itemLock.Unlock()
-      return workerrpc.ItemNotFound
+      err := errors.New("can't find with key")
+      return err
     }
     //unlock here
     ws.itemLock.Unlock()
@@ -131,29 +134,28 @@ func (ws *workerServer) Compute(args *workerrpc.ComputeArgs, reply *workerrpc.Co
 
     //right now it's just a hash with the looked up value
     //simulating a password hashing with salt
-    job = args.job
-    n = args.cost
-    salt = args.salt
+    job := args.Job
+    cost := args.Cost
+    salt := args.Salt
 
     //first check for types of job
     if strings.EqualFold(job,"hashing"){
       //looking up value same as in GET
-      hash_err := salt_hash (args.key,salt,n)
+      hash_err := ws.salt_hash (args.Key,salt,cost)
       if hash_err != nil {
         return hash_err
       }
-      //generally should not return the hash
-      //but we are only testing
-      reply.Result = h
+      reply.Result = "success"
       reply.Status = workerrpc.OK
       return nil
 
     } else {
     //check for other work type and call appropriate func
-    reply.Result = args.Param
+    reply.Result = args.Key
 
     reply.Status = workerrpc.OK
     return nil
+    }
 }
 
 
