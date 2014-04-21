@@ -1,0 +1,12 @@
+[MASTER] New master server
+[MASTER] Booted successfully -- waiting for workers
+[MASTER] Register Server called
+[MASTER] assigning ID  0
+[MASTER] Calling:  128.2.13.134:10486
+[MASTER] Registered with worker
+Waiting for  1 more nodes
+[MASTER] Register Server called
+[MASTER] assigning ID  2147483648
+[MASTER] Calling:  128.2.13.134:18717
+[MASTER] Registered with worker
+[MASTER] Ready:  [{128.2.13.134:10486 0} {128.2.13.134:18717 2147483648}]
