@@ -44,7 +44,7 @@ func (ms *masterServer) hashToIndex(hash uint32) int {
         } else {
             upperID = ms.servers[index + 1].NodeID
         }
-        if lowerID <= hash && upperID < hash {
+        if lowerID <= hash && hash < upperID {
             //Inclusive --  [index, nextIndex) -- Exclusive
             return index
         } else if (upperID == math.MaxUint32) && (upperID == hash) {
@@ -52,6 +52,7 @@ func (ms *masterServer) hashToIndex(hash uint32) int {
             return index
         }
     }
+    fmt.Println("[MASTER] [ERROR -- INVALID HASH... somehow...]")
     //XXX Should assert false
     return 0
 }
@@ -119,7 +120,7 @@ func (ms *masterServer) RegisterServer(args *masterrpc.RegisterArgs, reply *mast
 }
 
 func (ms *masterServer) Get(args *masterrpc.GetArgs, reply *masterrpc.GetReply) error {
-    fmt.Println("[MASTER] GET")
+    fmt.Println("[MASTER] GET", args.Key)
     if !ms.serverReady {
         reply.Status = masterrpc.NotReady
         return errors.New("[MASTER] [ERROR] Not all workers have registered yet")
@@ -138,7 +139,7 @@ func (ms *masterServer) Get(args *masterrpc.GetArgs, reply *masterrpc.GetReply) 
 }
 
 func (ms *masterServer) Put(args *masterrpc.PutArgs, reply *masterrpc.PutReply) error {
-    fmt.Println("[MASTER] PUT")
+    fmt.Println("[MASTER] PUT :", args.Key, args.Value)
     if !ms.serverReady {
         reply.Status = masterrpc.NotReady
         return errors.New("[MASTER] [ERROR] Not all workers have registered yet")
