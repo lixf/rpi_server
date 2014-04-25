@@ -12,6 +12,7 @@ WORKER_PORT2=$(((RANDOM % 10000) + 10000))
 WORKER_GO=$GOPATH/src/runners/wrunner/wrunner.go
 MASTER_GO=$GOPATH/src/runners/mrunner/mrunner.go
 CLIENT_GO=$GOPATH/src/runners/crunner/crunner.go
+TEST_FILE=basicGetPost.txt
 
 go run $WORKER_GO -port=$WORKER_PORT1 > "logs/worker1.log" &
 WORKER1_PID=$!
@@ -22,9 +23,10 @@ WORKER2_PID=$!
 go run $MASTER_GO -N=2 > "logs/master.log" &
 MASTER_PID=$!
 
-go run $CLIENT_GO -b="tests/basicGetPost.txt" > "logs/client.log" &
+sleep 3
+go run $CLIENT_GO -b=$TEST_FILE > "logs/client.log" &
+sleep 4
 
-sleep 5
 
 cat logs/master.log
 

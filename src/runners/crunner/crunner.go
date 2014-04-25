@@ -69,6 +69,7 @@ func sendReq(client client.RpiClient, requests []string) error {
         cmd := fields[0]
         if strings.Contains(cmd,"COMPUTE") {
             //Parse the appropriate parameters of a compute job.
+            //COMPUTE [TYPE] [KEY] [SALT] [COST]
             jobType := fields[1]
             key := fields[2]
             salt := fields[3]
