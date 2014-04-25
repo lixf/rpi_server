@@ -1,6 +1,8 @@
 package client
 
 import (
+    "fmt"
+    "time"
     "net/rpc"
     "rpc/masterrpc"
 )
@@ -10,6 +12,7 @@ type rpiClient struct {
 }
 
 func NewClient(masterServerHostPort string) (RpiClient, error) {
+    fmt.Println("[CLIENT], ", time.Now())
     cli, err := rpc.DialHTTP("tcp", masterServerHostPort)
     if err != nil {
         return nil, err

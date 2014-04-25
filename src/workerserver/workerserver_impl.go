@@ -24,7 +24,7 @@ type workerServer struct {
 const masterServerHostPort = ipaddrs.MasterServerHostPort
 
 func NewWorkerServer(workerServerHostPort string) (WorkerServer, error) {
-    fmt.Println("[WORKER] New worker")
+    fmt.Println("[WORKER] New worker", time.Now())
     ws := new(workerServer)
     ws.storageMap = make(map[string]string)
     ws.myNode = &masterrpc.Node{}

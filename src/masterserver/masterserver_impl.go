@@ -2,6 +2,7 @@ package masterserver
 
 import (
     "fmt"
+    "time"
     "net"
     "net/http"
     "net/rpc"
@@ -56,7 +57,7 @@ func (ms *masterServer) hashToIndex(hash uint32) int {
 }
 
 func NewMasterServer(masterServerHostPort string, numNodes int) (MasterServer, error) {
-    fmt.Println("[MASTER] New master server")
+    fmt.Println("[MASTER] New master server,", time.Now())
     ms := new(masterServer)
     ms.serverReady = false
     ms.numNodes = numNodes
