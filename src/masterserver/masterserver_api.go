@@ -7,7 +7,7 @@ type MasterServer interface {
     Get(*masterrpc.GetArgs, *masterrpc.GetReply) error
     Put(*masterrpc.PutArgs, *masterrpc.PutReply) error
     //TODO COMPUTE
-    Compute(*masterrpc.ComputeArgs, *masterrpc.ComputeReply) error
+    Hash(*masterrpc.HashArgs, *masterrpc.HashReply) error
 }
 
 

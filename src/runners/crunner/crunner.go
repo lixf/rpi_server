@@ -18,7 +18,8 @@ var test string
 var time int
 func init() {
     const (
-        defaultTest = "default.txt"
+        //directory is added when opening file
+        defaultTest = "basicGetPost.txt"
         usageTest = "--benchmark  -b : give benchmark files"
         defaultTime = 0
         usageTime = "--time       -t : display timing information"
@@ -54,9 +55,9 @@ func dispPost(client client.RpiClient, key, value string) {
 }
 
 //have hashing capability
-func dispCompute(client client.RpiClient, job,key,salt string,cost int) {
-    fmt.Println("[CLIENT] [COMPUTE] job: ",job,"key ",key,"salt ",salt)
-    status, res, err := client.Compute(job,key,salt,cost)
+func dispHash(client client.RpiClient,key,salt string,cost int) {
+    fmt.Println("[CLIENT] [COMPUTE] key ",key,"salt ",salt)
+    status, res, err := client.Hash(key,salt,cost)
     checkError(err)
     fmt.Println("[CLIENT] [COMPUTE] Status: ", status, ", result: ", res)
 }
@@ -67,23 +68,25 @@ func sendReq(client client.RpiClient, requests []string) error {
         //split on space " "
         fields := strings.Split(req," ")
         cmd := fields[0]
-        if strings.Contains(cmd,"COMPUTE") {
+        switch cmd{
+        case "HASH":
             //Parse the appropriate parameters of a compute job.
             //COMPUTE [TYPE] [KEY] [SALT] [COST]
-            jobType := fields[1]
             key := fields[2]
             salt := fields[3]
             cost,err := strconv.ParseInt(fields[4],10,0)
             checkError(err)
             //job,key,salt,cost
-            dispCompute(client, jobType, key, salt, int(cost))
-        } else if strings.Contains(cmd,"GET") {
+            dispHash(client, key, salt, int(cost))
+
+        case "GET" :
             //key
             dispGet(client,fields[1])
-        } else if strings.Contains(cmd,"POST") {
+        case "POST" :
             //key,val
             dispPost(client,fields[1],fields[2])
-        } else {
+
+        default :
             fmt.Println(cmd)
             err := errors.New("Undefined request stream")
             return err
@@ -105,7 +108,7 @@ func main() {
     fmt.Println("time? ",time)
 
     //parse the input file specified
-    data, ioErr := ioutil.ReadFile(test)
+    data, ioErr := ioutil.ReadFile("tests/"+test)
     checkError(ioErr)
 
     fmt.Println("[CLIENT] parsing...")
@@ -123,15 +126,5 @@ func main() {
     fmt.Println("[CLIENT] Sending requests")
     sErr := sendReq(client,requests)
     checkError(sErr)
-
-    //start sending messages from the file
-    dispGet(client, "hihi")
-    dispPost(client, "hihi", "asdf")
-    dispGet(client, "hihi")
-    dispPost(client, "hihi", "aaaaaaaaaaaaaaaaaaa")
-
-    //TODO COMPUTE
-    dispCompute(client, "hash","hihi","salt",1)
-    dispGet(client, "hihi")
 }
 

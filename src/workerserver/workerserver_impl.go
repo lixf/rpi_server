@@ -109,11 +109,10 @@ func (ws *workerServer) salt_hash (key string, salt string, cost int) error{
         //check error and then put the hash back
         if err != nil {
           ws.itemLock.Unlock()
-    	  fmt.Println("error with hashing")
           return err
         }
-    	fmt.Println("h is ",h)
-   	ws.storageMap[key] = string(h)
+        fmt.Println("h is ",h)
+        ws.storageMap[key] = string(h)
     } else {
       ws.itemLock.Unlock()
       err := errors.New("can't find with key")
@@ -126,37 +125,29 @@ func (ws *workerServer) salt_hash (key string, salt string, cost int) error{
 
 
 //2. GPU image rendering
+
+
 //3. compute prime
 
 
 
-func (ws *workerServer) Compute(args *workerrpc.ComputeArgs, reply *workerrpc.ComputeReply) error {
-    fmt.Println("[WORKER] COMPUTE called")
 
-    //right now it's just a hash with the looked up value
+///Wrappers for each compute here
+///1.HASH -- calls salt_hash
+func (ws *workerServer) Hash(args *workerrpc.HashArgs, reply *workerrpc.HashReply) error {
+    fmt.Println("[WORKER] HASH called")
     //simulating a password hashing with salt
-    job := args.Job
     cost := args.Cost
     salt := args.Salt
 
-    //first check for types of job
-    if job == "hash"{
-      //looking up value same as in GET
-      hash_err := ws.salt_hash (args.Key,salt,cost)
-      if hash_err != nil {
-        return hash_err
-      }
-      reply.Result = "success"
-      reply.Status = workerrpc.OK
-      return nil
-
-    } else {
-    //check for other work type and call appropriate func
-    reply.Result = args.Key
-
+    //looking up value same as in GET
+    hash_err := ws.salt_hash (args.Key,salt,cost)
+    if hash_err != nil {
+      return hash_err
+    }
+    reply.Result = "success"
     reply.Status = workerrpc.OK
     return nil
-    }
 }
 
 

@@ -157,7 +157,7 @@ func (ms *masterServer) Put(args *masterrpc.PutArgs, reply *masterrpc.PutReply) 
 }
 
 //TODO COMPUTE
-func (ms *masterServer) Compute(args *masterrpc.ComputeArgs, reply *masterrpc.ComputeReply) error {
+func (ms *masterServer) Hash(args *masterrpc.HashArgs, reply *masterrpc.HashReply) error {
     fmt.Println("[MASTER] COMPUTE")
     if !ms.serverReady {
         reply.Status = masterrpc.NotReady
@@ -166,9 +166,9 @@ func (ms *masterServer) Compute(args *masterrpc.ComputeArgs, reply *masterrpc.Co
     //TODO Find the appropriate worker, put. Possibly cache later.
     index := ms.hashToIndex(hashing.HashString(args.Key))
     cli := ms.connections[index]
-    wArgs := &workerrpc.ComputeArgs{Key: args.Key,Salt: args.Salt,Job: args.Job,Cost: args.Cost}
-    var wReply workerrpc.ComputeReply
-    if err := cli.Call("WorkerServer.Compute", wArgs, &wReply); err != nil {
+    wArgs := &workerrpc.HashArgs{Key: args.Key,Salt: args.Salt,Cost: args.Cost}
+    var wReply workerrpc.HashReply
+    if err := cli.Call("WorkerServer.Hash", wArgs, &wReply); err != nil {
         return err
     } else {
         reply.Result = wReply.Result

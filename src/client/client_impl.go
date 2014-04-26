@@ -38,11 +38,11 @@ func (rc *rpiClient) Put(key, value string) (masterrpc.Status, error) {
     return reply.Status, nil
 }
 
-func (rc *rpiClient) Compute(job string, key string, salt string, cost int) (masterrpc.Status, string, error){
-    args := &masterrpc.ComputeArgs{Job: job, Key: key, Salt: salt, Cost: cost}
-    var reply masterrpc.ComputeReply
+func (rc *rpiClient) Hash(key string, salt string, cost int) (masterrpc.Status, string, error){
+    args := &masterrpc.HashArgs{Key: key, Salt: salt, Cost: cost}
+    var reply masterrpc.HashReply
     //TODO COMPUTE: Pass real arguments, get a real response
-    if err := rc.client.Call("MasterServer.Compute", args, &reply); err != nil {
+    if err := rc.client.Call("MasterServer.Hash", args, &reply); err != nil {
         return 0, "", err
     }
     return reply.Status, reply.Result, nil

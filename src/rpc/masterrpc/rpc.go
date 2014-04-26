@@ -5,7 +5,7 @@ type RemoteMasterServer interface {
     Get(*GetArgs, *GetReply) error
     Put(*PutArgs, *PutReply) error
     //TODO COMPUTE
-    Compute(*ComputeArgs, *ComputeReply) error
+    Hash(*HashArgs, *HashReply) error
 }
 
 type MasterServer struct {
