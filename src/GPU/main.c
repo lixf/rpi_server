@@ -1,8 +1,10 @@
+//testing purposes
+//
+//
 
 
-#include "hello.h"
-
-int main (){
-  hello_test();
+int main(){
+  
+  hello_test_help();
   return 0;
 }
