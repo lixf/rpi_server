@@ -16,7 +16,7 @@ int hello_test (){
   int status;
 
   //for execve
-  char file[6] = "hello";
+  char file[73] = "/opt/vc/src/hello_pi/hello_triangle/hello_triangle.bin";
   char *argv[] = {NULL};
   extern char **environ;
   
