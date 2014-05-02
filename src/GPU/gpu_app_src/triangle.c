@@ -37,6 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "bcm_host.h"
 
 #include "GLES/gl.h"
+#include "GLES2/gl2.h"
 #include "EGL/egl.h"
 #include "EGL/eglext.h"
 
@@ -78,6 +79,7 @@ typedef struct
 // to output to texure
    GLuint frame_buf;
    GLuint rendered_texture;
+   GLuint depth_rb;
 } CUBE_STATE_T;
 
 static void init_ogl(CUBE_STATE_T *state);
@@ -398,61 +400,62 @@ static void render_to_tex(CUBE_STATE_T *state){
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
    //NULL means reserve texture memory, but texels are undefined
-   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 256, 256, 0, GL_BGRA, GL_UNSIGNED_BYTE, NULL);
+   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
    //-------------------------
-   glGenFramebuffersEXT(1, &state->frame_buf);
-   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, state->frame_buf);
+   glGenFramebuffers(1, &(state->frame_buf));
+   glBindFramebuffer(GL_FRAMEBUFFER, state->frame_buf);
    //Attach 2D texture to this FBO
-   glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, state->rendered_texture, 0);
+   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, state->rendered_texture, 0);
    //-------------------------
-   glGenRenderbuffersEXT(1, &depth_rb);
-   glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depth_rb);
-   glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, 256, 256);
-   //-------------------------
-   //Attach depth buffer to FBO
-   glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depth_rb);
    //-------------------------
    //Does the GPU support current FBO configuration?
    GLenum status;
-   status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+   status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
    switch(status)
    {
-      case GL_FRAMEBUFFER_COMPLETE_EXT:
+      case GL_FRAMEBUFFER_COMPLETE:
       printf("good\n");
    default:
       printf("bad\n");
    }
    //-------------------------
    //and now you can render to GL_TEXTURE_2D
-   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, state->frame_buf);
+   glBindFramebuffer(GL_FRAMEBUFFER, state->frame_buf);
    glClearColor(0.0, 0.0, 0.0, 0.0);
-   glClearDepth(1.0f);
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    //-------------------------
    glViewport(0, 0, 256, 256);
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
-   glOrtho(0.0, 256.0, 0.0, 256.0, -1.0, 1.0); 
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
    //-------------------------
    glDisable(GL_TEXTURE_2D);
    glDisable(GL_BLEND);
-   glEnable(GL_DEPTH_TEST);
    //-------------------------
-   //**************************
-   //RenderATriangle, {0.0, 0.0}, {256.0, 0.0}, {256.0, 256.0}
-   //Read http://www.opengl.org/wiki/VBO_-_just_examples
-   RenderATriangle();
    //-------------------------
    GLubyte pixels[4*4*4];
-   glReadPixels(0, 0, 4, 4, GL_BGRA, GL_UNSIGNED_BYTE, pixels);
+   glReadPixels(0, 0, 4, 4, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
    //pixels 0, 1, 2 should be white
    //pixel 4 should be black
    //----------------
    //Bind 0, which means render to back buffer
-   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+   glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+}
+
+/*************************************
+   save to file
+*************************************/
+void save_texture(const char* fname){
+   void* image = malloc((state->screen_width) * (state->screen_height) * 4);
+   glBindFramebuffer(GL_FRAMEBUFFER,state->frame_buf);
+
+   glReadPixels(0.0,state->screen_width,state->screen_height,GL_RGBA,GL_UNSIGNED_BYTE,image);
+   unsigned error = encode(fname,(const unsigned char*)image,state->screen_width,state->screen_height,LCT_RGBA);
+   if(error){
+      printf("error!\n");
+   }
+   free(image);
 }
 
 
@@ -614,6 +617,8 @@ int main ()
       update_model(state);
       redraw_scene(state);
    }
+   render_to_tex(state);
+
    exit_func();
    return 0;
 }
