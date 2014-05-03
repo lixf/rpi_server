@@ -5,6 +5,35 @@ rpi_server
 
 By Xiaofan and Sean!
 
+RPi Network Config & Status:
+
+  Public IP:
+    "67.172.17.220" -- DHCP 
+    (ask me for new IP if this doesn't work)
+    The public IP connects to the master, 
+    you need to use the master to connect to 
+    the workers to set up workers
+
+  LAN SSH IP:
+    Master:
+    li01: 192.168.1.51
+    
+    Worker:
+    li02: 192.168.1.52
+    li03: 192.168.1.53
+    li04: 192.168.1.54
+    li05: 192.168.1.55
+    li06: 192.168.1.56
+
+  Status: 
+    li01-04 is on for testing.
+
+  Info on GIT Repo:
+    code base is in "~/code"
+    push/pull key is in src/RSA.txt
+
+
+
 From the src directory...
 
     To acivate a master:
