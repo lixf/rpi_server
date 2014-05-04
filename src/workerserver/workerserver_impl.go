@@ -45,10 +45,10 @@ func NewWorkerServer(workerServerHostPort string) (WorkerServer, error) {
     master, err := rpc.DialHTTP("tcp", masterServerHostPort)
     for err != nil {
         time.Sleep(1 * time.Second)
-        fmt.Println("[WORKER] Cannot see master", err)
+        fmt.Println("[WORKER] [TEMP ERROR] Cannot see master.", err)
         master, err = rpc.DialHTTP("tcp", masterServerHostPort)
     }
-    fmt.Println("[WORKER] Worker has successfully connected to master")
+    fmt.Println("[WORKER] [SUCCESS] Worker has successfully connected to master")
     rpc.HandleHTTP()
     go http.Serve(listener, nil)
     //Register self with master node

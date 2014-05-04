@@ -27,7 +27,8 @@ type masterServer struct {
  * to an appropriate hash value. 
  */
 func indexToHash(ms *masterServer, index uint32) uint32 {
-    return uint32(float32(index)*float32(math.MaxUint32)/float32(ms.numNodes))
+    hash := uint32(float64(index)*float64(math.MaxUint32)/float64(ms.numNodes))
+    return hash
 }
 
 /* Function which converts a hash value into an appropriate index into 
@@ -46,9 +47,11 @@ func (ms *masterServer) hashToIndex(hash uint32) int {
         }
         if lowerID <= hash && hash < upperID {
             //Inclusive --  [index, nextIndex) -- Exclusive
+            fmt.Println("[MASTERHASH] Index: ", index, lowerID, upperID)
             return index
         } else if (upperID == math.MaxUint32) && (upperID == hash) {
             //(exception -- maxInt is included in "nextIndex")
+            fmt.Println("[MASTERHASH] Index: ", index, lowerID, upperID)
             return index
         }
     }

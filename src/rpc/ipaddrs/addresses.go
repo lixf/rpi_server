@@ -12,7 +12,7 @@ const MasterServerHostPort = MasterIP + ":" + MasterPort
 
 //Used only by workers, as a default
 const WorkerPort = "8000"
-const NumNodes = 2
+const NumNodes = 3
 
 func DetermineIP() string {
     addrs, err := net.InterfaceAddrs()

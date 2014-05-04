@@ -7,5 +7,6 @@ import (
 func HashString(key string) uint32 {
     hasher := fnv.New32()
     hasher.Write([]byte(key))
-    return hasher.Sum32()
+    res := hasher.Sum32()
+    return res
 }

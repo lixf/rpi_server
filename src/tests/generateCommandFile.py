@@ -9,7 +9,7 @@ alphabet = string.lowercase
 
 def randomWord(length = 0):
     if (length == 0):
-        length = random.randint(1, 3)
+        length = random.randint(8, 12)
     return ''.join(random.choice(alphabet) for n in xrange(length))
 
 if (num_args != 2):

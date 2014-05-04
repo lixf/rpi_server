@@ -5,10 +5,11 @@ if [ -z $GOPATH ]; then
     exit 1
 fi
 
-echo "Basic Test: Two workers, one master, three clients."
+echo "Basic Test: Three workers, one master, three clients."
 
 WORKER_PORT1=$(((RANDOM % 10000) + 10000))
 WORKER_PORT2=$(((RANDOM % 10000) + 10000))
+WORKER_PORT3=$(((RANDOM % 10000) + 10000))
 WORKER_GO=$GOPATH/src/runners/wrunner/wrunner.go
 MASTER_GO=$GOPATH/src/runners/mrunner/mrunner.go
 CLIENT_GO=$GOPATH/src/runners/crunner/crunner.go
@@ -22,7 +23,10 @@ WORKER1_PID=$!
 go run $WORKER_GO -port=$WORKER_PORT2 > "logs/worker2.log" &
 WORKER2_PID=$!
 
-go run $MASTER_GO -N=2 > "logs/master.log" &
+go run $WORKER_GO -port=$WORKER_PORT3 > "logs/worker3.log" &
+WORKER3_PID=$!
+
+go run $MASTER_GO -N=3 > "logs/master.log" &
 MASTER_PID=$!
 
 sleep 3
@@ -53,4 +57,5 @@ echo "[TEST] Finish. Control + C to kill master and workers."
 
 wait $WORKER1_PID
 wait $WORKER2_PID
+wait $WORKER3_PID
 wait $MASTER_PID
