@@ -50,14 +50,26 @@ type PutReply struct {
     Status Status
 }
 
-//TODO COMPUTE
+// COMPUTE
 //added hasing with salt
+//compute test
 type HashArgs struct{
     Salt  string
     Cost  int
     Key   string
 }
 type HashReply struct {
+    Status Status
+    Result string
+}
+
+//added pictrue transmitting
+//bandwidth test
+type PictArgs struct{
+    PictBytes   []byte
+    Store       string
+}
+type PictReply struct {
     Status Status
     Result string
 }

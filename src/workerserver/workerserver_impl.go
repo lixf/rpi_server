@@ -13,6 +13,7 @@ import (
     "sync"
     "errors"
     "lib/code.google.com/p/go.crypto/bcrypt"//for hashing
+    "io/ioutil" //for writing files
 )
 
 type workerServer struct {
@@ -151,3 +152,21 @@ func (ws *workerServer) Hash(args *workerrpc.HashArgs, reply *workerrpc.HashRepl
 }
 
 
+///2.Pict
+func (ws *workerServer) Pict(args *workerrpc.PictArgs, reply *workerrpc.PictReply) error {
+    fmt.Println("[WORKER] PICT called")
+    //get the arguments and write to file
+    pbytes := args.PictBytes
+    store  := args.Store
+    path   := "src/store_pict/"
+
+    //writes to file filemode = rwrwrw
+    ferr := ioutil.WriteFile((path+store), pbytes, 0666)
+
+    if ferr != nil {
+      return ferr
+    }
+    reply.Result = "success"
+    reply.Status = workerrpc.OK
+    return nil
+}

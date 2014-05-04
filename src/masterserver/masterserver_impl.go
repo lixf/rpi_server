@@ -158,7 +158,7 @@ func (ms *masterServer) Put(args *masterrpc.PutArgs, reply *masterrpc.PutReply) 
 
 //TODO COMPUTE
 func (ms *masterServer) Hash(args *masterrpc.HashArgs, reply *masterrpc.HashReply) error {
-    fmt.Println("[MASTER] COMPUTE")
+    fmt.Println("[MASTER] HASH")
     if !ms.serverReady {
         reply.Status = masterrpc.NotReady
         return errors.New("[MASTER] [ERROR] Not all workers have registered yet")
@@ -169,6 +169,28 @@ func (ms *masterServer) Hash(args *masterrpc.HashArgs, reply *masterrpc.HashRepl
     wArgs := &workerrpc.HashArgs{Key: args.Key,Salt: args.Salt,Cost: args.Cost}
     var wReply workerrpc.HashReply
     if err := cli.Call("WorkerServer.Hash", wArgs, &wReply); err != nil {
+        return err
+    } else {
+        reply.Result = wReply.Result
+        return nil
+    }
+}
+
+func (ms *masterServer) Pict(args *masterrpc.PictArgs, reply *masterrpc.PictReply) error {
+    fmt.Println("[MASTER] TRANSMIT")
+    if !ms.serverReady {
+        reply.Status = masterrpc.NotReady
+        return errors.New("[MASTER] [ERROR] Not all workers have registered yet")
+    }
+    //Decide on the key
+    key := "PICT_" + args.Store
+
+    //TODO Find the appropriate worker, put. Possibly cache later.
+    index := ms.hashToIndex(hashing.HashString(key))
+    cli := ms.connections[index]
+    wArgs := &workerrpc.PictArgs{PictBytes: args.PictBytes, Store: args.Store}
+    var wReply workerrpc.HashReply
+    if err := cli.Call("WorkerServer.Pict", wArgs, &wReply); err != nil {
         return err
     } else {
         reply.Result = wReply.Result
