@@ -127,7 +127,7 @@ func main() {
     checkError(sErr)
 
     //TODO COMPUTE
-    dispCompute(client, "hash","hihi","salt",1)
+    dispHash(client,"hihi","salt",1)
     dispGet(client, "hihi")
 }
 
