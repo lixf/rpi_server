@@ -54,9 +54,9 @@ type PutReply struct {
 //TODO COMPUTE
 //added hasing with salt
 type HashArgs struct{
-    Salt  string
-    Cost  int
-    Key   string
+    Salt  string    //Effectively random
+    Cost  int       //Number of hashing iterations
+    Key   string    //... yeah.
 }
 type HashReply struct {
     Status Status

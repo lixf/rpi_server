@@ -5,12 +5,12 @@ import (
     "net"
 )
 
-const MasterIP   = "128.2.13.134"
+const MasterIP   = "192.168.1.14"
 const MasterPort = "9001"
 const MasterServerHostPort = MasterIP + ":" + MasterPort
 
 const WorkerPort = "8000"
-const NumNodes = 1
+const NumNodes = 2
 
 func DetermineIP() string {
     addrs, err := net.InterfaceAddrs()

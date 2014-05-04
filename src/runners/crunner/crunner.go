@@ -114,8 +114,7 @@ func main() {
     fmt.Println("[CLIENT] parsing...")
     //do a split on newline to find requests
     requests := strings.Split(string(data),"\n")
-    fmt.Println("[CLIENT] ... parsing finished.")
-
+    fmt.Println("[CLIENT] ... parsing finished. Lines: ", len(requests))
     //network code starts here
     fmt.Println("[CLIENT] Being created")
     client, err := client.NewClient(ipaddrs.MasterServerHostPort)
@@ -126,5 +125,9 @@ func main() {
     fmt.Println("[CLIENT] Sending requests")
     sErr := sendReq(client,requests)
     checkError(sErr)
+
+    //TODO COMPUTE
+    dispCompute(client, "hash","hihi","salt",1)
+    dispGet(client, "hihi")
 }
 

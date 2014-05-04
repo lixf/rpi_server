@@ -1,2 +1,8 @@
-[WORKER] New worker
+[WORKER] New worker 2014-04-25 00:12:21.023187878 -0400 EDT
 [WORKER] Worker has successfully connected to master
+[WORKER] COMPUTE called
+[WORKER] COMPUTE->hashing
+[WORKER] COMPUTE called
+[WORKER] COMPUTE->hashing
+[WORKER] COMPUTE called
+[WORKER] COMPUTE->hashing
