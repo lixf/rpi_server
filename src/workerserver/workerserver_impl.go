@@ -158,7 +158,7 @@ func (ws *workerServer) Pict(args *workerrpc.PictArgs, reply *workerrpc.PictRepl
     //get the arguments and write to file
     pbytes := args.PictBytes
     store  := args.Store
-    path   := "./store_pict/"
+    path   := "src/store_pict/"
 
     //writes to file filemode = rwrwrw
     ferr := ioutil.WriteFile((path+store), pbytes, 0666)

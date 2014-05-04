@@ -5,7 +5,7 @@ import (
     "net"
 )
 
-const MasterIP   = "192.168.1.14"
+const MasterIP   = "192.168.1.51"
 const MasterPort = "9001"
 const MasterServerHostPort = MasterIP + ":" + MasterPort
 

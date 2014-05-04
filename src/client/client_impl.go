@@ -50,7 +50,7 @@ func (rc *rpiClient) Hash(key string, salt string, cost int) (masterrpc.Status, 
 }
 
 func (rc *rpiClient) Pict(local string, store string) (masterrpc.Status, string, error){
-    path := "./local_pict/"
+    path := "src/local_pict/"
     //do file io here and read in the picture stored at "local"
     pbytes, ferr := ioutil.ReadFile(path+local);
     if ferr != nil {
