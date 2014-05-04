@@ -56,10 +56,18 @@ func dispPost(client client.RpiClient, key, value string) {
 
 //have hashing capability
 func dispHash(client client.RpiClient,key,salt string,cost int) {
-    fmt.Println("[CLIENT] [COMPUTE] key ",key,"salt ",salt)
+    fmt.Println("[CLIENT] [HASH] key ",key,"salt ",salt)
     status, res, err := client.Hash(key,salt,cost)
     checkError(err)
-    fmt.Println("[CLIENT] [COMPUTE] Status: ", status, ", result: ", res)
+    fmt.Println("[CLIENT] [HASH] Status: ", status, ", result: ", res)
+}
+
+//have hashing capability
+func dispPict(client client.RpiClient, local, store string) {
+    fmt.Println("[CLIENT] [PICT] local ",local,"store ",store)
+    status, res, err := client.Pict(local,store)
+    checkError(err)
+    fmt.Println("[CLIENT] [PICT] Status: ", status, ", result: ", res)
 }
 
 func sendReq(client client.RpiClient, requests []string) error {
@@ -108,7 +116,7 @@ func main() {
     fmt.Println("time? ",time)
 
     //parse the input file specified
-    data, ioErr := ioutil.ReadFile("tests/"+test)
+    data, ioErr := ioutil.ReadFile("src/tests/"+test)
     checkError(ioErr)
 
     fmt.Println("[CLIENT] parsing...")
@@ -127,7 +135,9 @@ func main() {
     checkError(sErr)
 
     //TODO COMPUTE
-    dispHash(client, "hihi","salt",1)
+    dispPost(client,"hihi","123")
+    dispHash(client,"hihi","salt",1)
     dispGet(client, "hihi")
+    dispPict(client,"sig.ppm","transmitted.ppm")
 }
 

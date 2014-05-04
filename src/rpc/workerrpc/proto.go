@@ -62,3 +62,14 @@ type HashReply struct {
     Status Status
     Result string
 }
+
+//transmitting pictures
+type PictArgs struct{
+    PictBytes []byte
+    Store     string
+
+}
+type PictReply struct {
+    Status Status
+    Result string
+}

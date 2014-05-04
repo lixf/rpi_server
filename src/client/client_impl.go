@@ -5,6 +5,7 @@ import (
     "time"
     "net/rpc"
     "rpc/masterrpc"
+    "io/ioutil"
 )
 
 type rpiClient struct {
@@ -48,3 +49,20 @@ func (rc *rpiClient) Hash(key string, salt string, cost int) (masterrpc.Status, 
     return reply.Status, reply.Result, nil
 }
 
+func (rc *rpiClient) Pict(local string, store string) (masterrpc.Status, string, error){
+    path := "src/local_pict/"
+    //do file io here and read in the picture stored at "local"
+    pbytes, ferr := ioutil.ReadFile(path+local);
+    if ferr != nil {
+        fmt.Println("file opening err")
+        return 0,"",ferr
+    }
+    //pass the picture over the network
+    args := &masterrpc.PictArgs{PictBytes: pbytes, Store: store}
+    var reply masterrpc.PictReply
+    //COMPUTE: Pass real arguments, get a real response
+    if err := rc.client.Call("MasterServer.Pict", args, &reply); err != nil {
+        return 0, "", err
+    }
+    return reply.Status, reply.Result, nil
+}

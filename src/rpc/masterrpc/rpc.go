@@ -6,6 +6,7 @@ type RemoteMasterServer interface {
     Put(*PutArgs, *PutReply) error
     //TODO COMPUTE
     Hash(*HashArgs, *HashReply) error
+    Pict(*PictArgs, *PictReply) error
 }
 
 type MasterServer struct {
