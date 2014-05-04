@@ -116,7 +116,7 @@ func (ws *workerServer) salt_hash (key string, salt string, cost int) error{
         ws.storageMap[key] = string(h)
     } else {
       ws.itemLock.Unlock()
-      err := errors.New("can't find with key")
+      err := errors.New("[HASH] Unable to find the key supplied")
       return err
     }
     //unlock here
@@ -158,10 +158,9 @@ func (ws *workerServer) Pict(args *workerrpc.PictArgs, reply *workerrpc.PictRepl
     //get the arguments and write to file
     pbytes := args.PictBytes
     store  := args.Store
-    path   := "src/store_pict/"
 
     //writes to file filemode = rwrwrw
-    ferr := ioutil.WriteFile((path+store), pbytes, 0666)
+    ferr := ioutil.WriteFile(store, pbytes, 0666)
 
     if ferr != nil {
       return ferr

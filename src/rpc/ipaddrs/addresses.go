@@ -4,8 +4,9 @@ import (
     "os"
     "net"
 )
-
-const MasterIP   = "128.2.13.134"
+//Unix2
+//const MasterIP   = "128.2.13.134"
+const MasterIP = "128.237.242.27"
 const MasterPort = "9003"
 const MasterServerHostPort = MasterIP + ":" + MasterPort
 

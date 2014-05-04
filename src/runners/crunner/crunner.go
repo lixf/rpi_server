@@ -79,21 +79,23 @@ func sendReq(client client.RpiClient, requests []string) error {
         switch cmd{
         case "HASH":
             //Parse the appropriate parameters of a compute job.
-            //COMPUTE [TYPE] [KEY] [SALT] [COST]
-            key := fields[2]
-            salt := fields[3]
-            cost,err := strconv.ParseInt(fields[4],10,0)
+            //HASH [KEY] [SALT] [COST]
+            key := fields[1]
+            salt := fields[2]
+            cost,err := strconv.ParseInt(fields[3],10,0)
             checkError(err)
-            //job,key,salt,cost
             dispHash(client, key, salt, int(cost))
-
         case "GET" :
             //key
             dispGet(client,fields[1])
         case "POST" :
             //key,val
             dispPost(client,fields[1],fields[2])
-
+        case "PICT" :
+            //localname, storednamed
+            local := fields[1]
+            store := fields[2]
+            dispPict(client, local, store)
         default :
             fmt.Println(cmd)
             err := errors.New("Undefined request stream")
@@ -116,7 +118,7 @@ func main() {
     fmt.Println("time? ",time)
 
     //parse the input file specified
-    data, ioErr := ioutil.ReadFile("src/tests/"+test)
+    data, ioErr := ioutil.ReadFile(test)
     checkError(ioErr)
 
     fmt.Println("[CLIENT] parsing...")
@@ -138,6 +140,8 @@ func main() {
     dispPost(client,"hihi","123")
     dispHash(client,"hihi","salt",1)
     dispGet(client, "hihi")
-    dispPict(client,"sig.ppm","transmitted.ppm")
+    //TODO change this path
+    path := "/home/smklein/Code/15418/rpi_server/src"
+    dispPict(client, path + "/local_pict/sig.ppm", path + "/store_pict/transmitted.ppm")
 }
 
