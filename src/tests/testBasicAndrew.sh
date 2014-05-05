@@ -1,37 +1,62 @@
 #!/bin/bash
 
-echo "Basic Test: Two workers, one master, one client."
+echo "Basic Test: Three workers, one master, three clients."
 
 USERNAME=smklein
 MASTER_IP=unix2.andrew.cmu.edu
-WORKER_IP1=unix5.andrew.cmu.edu
-WORKER_IP2=unix6.andrew.cmu.edu
-
+WORKER_IP1=unix3.andrew.cmu.edu
+WORKER_IP2=unix5.andrew.cmu.edu
+WORKER_IP3=unix6.andrew.cmu.edu
 
 PROJECT_PATH=/afs/andrew.cmu.edu/usr23/smklein/private/15418/rpi_server
 #TODO along with the master port, you may need to change this. I'm bad at closing servers.
-WORKER_PORT1=8050
-WORKER_PORT2=8060
+WORKER_PORT1=$(((RANDOM % 10000) + 10000))
+WORKER_PORT2=$(((RANDOM % 10000) + 10000))
+WORKER_PORT3=$(((RANDOM % 10000) + 10000))
 WORKER_GO=$PROJECT_PATH/src/runners/wrunner/wrunner.go
 MASTER_GO=$PROJECT_PATH/src/runners/mrunner/mrunner.go
-LOGS=/afs/andrew.cmu.edu/usr23/smklein/private/15418/rpi_server/src/tests/logs
+LOGS=$PROJECT_PATH/src/tests/logs
 
-echo "WORKER 1:"
+echo "[TEST] WORKER 1:"
 ssh $USERNAME@$WORKER_IP1 "go run $WORKER_GO -port=$WORKER_PORT1 > $LOGS/worker1.log &" < /dev/null 
-echo "WORKER 2:"
+echo "[TEST] WORKER 2:"
 ssh -T $USERNAME@$WORKER_IP2 "go run $WORKER_GO -port=$WORKER_PORT2 > $LOGS/worker2.log &" < /dev/null
-echo "MASTER:" 
+echo "[TEST] WORKER 3:"
+ssh -T $USERNAME@$WORKER_IP3 "go run $WORKER_GO -port=$WORKER_PORT3 > $LOGS/worker3.log &" < /dev/null
+echo "[TEST] MASTER:" 
 ssh -T $USERNAME@$MASTER_IP "go run $MASTER_GO -N=2 > $LOGS/master.log &" < /dev/null
-echo "CLIENT (run locally):"
+
+echo "[TEST] Waiting for master/worker system to set up..."
+sleep 3
+echo "[TEST] Starting timer:"
+T="$(date +%s%N)"
+
+echo "[TEST] CLIENT (run locally):"
 CLIENT_GO=$GOPATH/src/runners/crunner/crunner.go
 TESTS=$GOPATH/src/tests
-go run $CLIENT_GO -b=$TESTS/basicGetPost.txt > $TESTS/logs/client.log &
 
-echo "Waiting for tests to execute"
-sleep 5
-echo "Waited for five seconds. Fetching results"
+go run $CLIENT_GO -b=$TESTS/shortGetPost1.txt > $TESTS/logs/client1.log &
+CLIENT_PID1=$!
+go run $CLIENT_GO -b=$TESTS/shortGetPost2.txt > $TESTS/logs/client2.log &
+CLIENT_PID2=$!
+go run $CLIENT_GO -b=$TESTS/shortGetPost3.txt > $TESTS/logs/client3.log &
+CLIENT_PID3=$!
+
+echo "[TEST] Waiting for client 1 to finish"
+wait $CLIENT_PID1
+echo "[TEST] Waiting for client 2 to finish"
+wait $CLIENT_PID2
+echo "[TEST] Waiting for client 3 to finish"
+wait $CLIENT_PID3
+
+T="$(($(date +%s%N)-$T))"
+M="$((T/1000000))"
+echo "[TEST] Time Elapsed in milliseconds: ${M}"
+echo "[TEST] Correctness not yet checked"
+echo "[TEST] Finished."
 
 scp $USERNAME@$WORKER_IP1:$LOGS/worker1.log logs/worker1.log
 scp $USERNAME@$WORKER_IP2:$LOGS/worker2.log logs/worker2.log
+scp $USERNAME@$WORKER_IP3:$LOGS/worker3.log logs/worker3.log
 scp $USERNAME@$MASTER_IP:$LOGS/master.log logs/master.log
 
