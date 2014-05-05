@@ -1,0 +1,2 @@
+This is the log directory. This is the message that prevents this directory 
+from totally disappearing. 
