@@ -3,11 +3,11 @@
 echo "Basic Test: Three workers, one master, three clients."
 
 USERNAME=pi
-MASTER_IP=
-WORKER_IP1=
-WORKER_IP2=
-WORKER_IP3=
-PROJECT_PATH=/afs/andrew.cmu.edu/usr23/smklein/private/15418/rpi_server
+MASTER_IP=192.168.1.51
+WORKER_IP1=192.168.1.52
+WORKER_IP2=192.168.1.53
+WORKER_IP3=192.168.1.54
+PROJECT_PATH=~/code/rpi_server
 
 #TODO along with the master port, you may need to change this. I'm bad at closing servers.
 WORKER_PORT1=$(((RANDOM % 10000) + 10000))
