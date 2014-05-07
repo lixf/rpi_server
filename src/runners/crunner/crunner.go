@@ -137,7 +137,7 @@ func main() {
     checkError(sErr)
 
     //TODO change this path
-    path := "~/Desktop/418_final/rpi_server/src"
-    dispPict(client, path + "/local_pict/sig.ppm", "~/code/rpi_server/store_pict/transmitted.ppm")
+    path := "/home/xiaofan/Desktop/418_final/rpi_server/src"
+    dispPict(client, path + "/local_pict/sig.ppm", "/home/pi/code/rpi_server/src/store_pict/transmitted.ppm")
 }
 
