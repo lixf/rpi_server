@@ -17,14 +17,17 @@ WORKER_GO=$PROJECT_PATH/src/runners/wrunner/wrunner.go
 MASTER_GO=$PROJECT_PATH/src/runners/mrunner/mrunner.go
 LOGS=$PROJECT_PATH/src/tests/logs
 
-echo "[TEST] WORKER 1:"
-ssh $USERNAME@$WORKER_IP1 "go run $WORKER_GO -port=$WORKER_PORT1 > $LOGS/worker1.log &" < /dev/null 
-echo "[TEST] WORKER 2:"
-ssh -T $USERNAME@$WORKER_IP2 "go run $WORKER_GO -port=$WORKER_PORT2 > $LOGS/worker2.log &" < /dev/null
-echo "[TEST] WORKER 3:"
-ssh -T $USERNAME@$WORKER_IP3 "go run $WORKER_GO -port=$WORKER_PORT3 > $LOGS/worker3.log &" < /dev/null
 echo "[TEST] MASTER:" 
 ssh -T $USERNAME@$MASTER_IP "go run $MASTER_GO -N=2 > $LOGS/master.log &" < /dev/null
+sleep 3
+echo "[TEST] WORKER 1:"
+ssh $USERNAME@$WORKER_IP1 "go run $WORKER_GO -port=$WORKER_PORT1 > $LOGS/worker1.log &" < /dev/null 
+sleep 3
+echo "[TEST] WORKER 2:"
+ssh -T $USERNAME@$WORKER_IP2 "go run $WORKER_GO -port=$WORKER_PORT2 > $LOGS/worker2.log &" < /dev/null
+sleep 3
+echo "[TEST] WORKER 3:"
+ssh -T $USERNAME@$WORKER_IP3 "go run $WORKER_GO -port=$WORKER_PORT3 > $LOGS/worker3.log &" < /dev/null
 
 echo "[TEST] Waiting for master/worker system to set up..."
 sleep 3

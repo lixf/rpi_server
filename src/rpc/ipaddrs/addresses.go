@@ -6,7 +6,7 @@ import (
 )
 //Unix2
 //const MasterIP   = "128.2.13.134"
-const MasterIP = "128.237.242.27"
+const MasterIP = "192.168.1.51"
 const MasterPort = "9003"
 const MasterServerHostPort = MasterIP + ":" + MasterPort
 
