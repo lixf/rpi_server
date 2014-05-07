@@ -447,14 +447,22 @@ static void render_to_tex(CUBE_STATE_T *state){
    save to file
 *************************************/
 void save_texture(const char* fname){
-   void* image = malloc((state->screen_width) * (state->screen_height) * 4);
+   
+   int image_sz = (state->screen_width) * (state->screen_height) * 4;
+
+   void* image = malloc(image_sz);
    glBindFramebuffer(GL_FRAMEBUFFER,state->frame_buf);
 
    glReadPixels(0.0,state->screen_width,state->screen_height,GL_RGBA,GL_UNSIGNED_BYTE,image);
-   unsigned error = encode(fname,(const unsigned char*)image,state->screen_width,state->screen_height,LCT_RGBA);
-   if(error){
-      printf("error!\n");
+    
+   FILE *save_file = fopen(PATH fname, "wb");
+   if (tex_file1 && image)
+   {
+      bytes_wrote=fwrite(image, 1, image_sz, save_file);
+      assert(bytes_read == image_sz);  // some problem with file?
+      fclose(save_file);
    }
+   //unsigned error = encode(fname,(const unsigned char*)image,state->screen_width,state->screen_height,LCT_RGBA);
    free(image);
 }
 
@@ -618,6 +626,7 @@ int main ()
       redraw_scene(state);
    }
    render_to_tex(state);
+   save_texture("test.ppm");
 
    exit_func();
    return 0;

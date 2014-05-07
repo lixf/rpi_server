@@ -136,12 +136,8 @@ func main() {
     sErr := sendReq(client,requests)
     checkError(sErr)
 
-    //TODO COMPUTE
-    dispPost(client,"hihi","123")
-    dispHash(client,"hihi","salt",1)
-    dispGet(client, "hihi")
     //TODO change this path
-    path := "/home/smklein/Code/15418/rpi_server/src"
-    dispPict(client, path + "/local_pict/sig.ppm", path + "/store_pict/transmitted.ppm")
+    path := "~/Desktop/418_final/rpi_server/src"
+    dispPict(client, path + "/local_pict/sig.ppm", "~/code/rpi_server/store_pict/transmitted.ppm")
 }
 
