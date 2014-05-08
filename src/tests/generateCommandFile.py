@@ -16,7 +16,7 @@ def randomWord(length = 0):
     return ''.join(random.choice(alphabet) for n in xrange(length))
 
 if (num_args != 3):
-    print "python generateCommandFile.py [OUTPUT FILE] [NUM COMMANDS] ['hash'/'basic']"
+    print "python generateCommandFile.py [OUTPUT FILE] [NUM COMMANDS] ['hash'/'basic'/'bandwidth']"
     exit(0)
 
 filename = sys.argv[1]
@@ -25,23 +25,23 @@ cmdType = sys.argv[3]
 
 #... just... keep the probabilities to two digits. 
 if cmdType == 'hash':
-    print "HASH -- 5% GET, 5% POST, 90% HASH"
-    prob["GET"] = 0.05
-    prob["POST"] = 0.05
-    prob["HASH"] = 0.90
+    print "HASH -- 0% GET, 0% POST, 100% HASH"
+    prob["GET"] = 0.00
+    prob["POST"] = 0.00
+    prob["HASH"] = 1.00
     prob["PICT"] = 0.00
 elif cmdType == 'basic':
-    print "BASIC -- 40% GET, 40$ POST, 20% HASH"
-    prob["GET"] = 0.40
-    prob["POST"] = 0.40
-    prob["HASH"] = 0.20
+    print "BASIC -- 50% GET, 50$ POST, 0% HASH"
+    prob["GET"] = 0.50
+    prob["POST"] = 0.50
+    prob["HASH"] = 0.00
     prob["PICT"] = 0.00
 elif cmdType == 'bandwidth':
-    print "Bandwidth -- 30% GET, 30$ POST, 20% HASH, 20% PICT"
-    prob["GET"] = 0.30
-    prob["POST"] = 0.30
-    prob["HASH"] = 0.20
-    prob["PICT"] = 0.20
+    print "Bandwidth -- 0% GET, 0$ POST, 0% HASH, 100% PICT"
+    prob["GET"] = 0.00
+    prob["POST"] = 0.00
+    prob["HASH"] = 0.00
+    prob["PICT"] = 1.00
 
 
 cmdPadded = []
@@ -75,7 +75,7 @@ for i in xrange(numCommands):
         elif ran == 2:
             local = local_path + "/local_pict/rpi.ppm"
             store = store_path + "/store_pict/rpi_t.ppm"
-        elif ran == 2:
+        elif ran == 3:
             local = local_path + "/local_pict/china.ppm"
             store = store_path + "/store_pict/china_t.ppm"
         args = local + " " + store
