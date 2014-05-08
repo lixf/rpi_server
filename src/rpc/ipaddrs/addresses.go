@@ -5,8 +5,12 @@ import (
     "net"
 )
 //Unix2
-//const MasterIP   = "128.2.13.134"
-const MasterIP = "192.168.1.51"
+//Pi master
+const MasterIP   = "192.168.1.51"
+//Sean's Laptop
+//const MasterIP   = "192.168.1.51"
+//Unix
+//const MasterIP = "128.2.13.133"
 const MasterPort = "9003"
 const MasterServerHostPort = MasterIP + ":" + MasterPort
 

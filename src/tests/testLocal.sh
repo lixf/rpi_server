@@ -14,8 +14,8 @@ WORKER_GO=$GOPATH/src/runners/wrunner/wrunner.go
 MASTER_GO=$GOPATH/src/runners/mrunner/mrunner.go
 CLIENT_GO=$GOPATH/src/runners/crunner/crunner.go
 TEST_FILE1=$GOPATH/src/tests/shortGetPost1.txt
-TEST_FILE2=$GOPATH/src/tests/shortGetPost2.txt
-TEST_FILE3=$GOPATH/src/tests/shortGetPost3.txt
+TEST_FILE2=$GOPATH/src/tests/shortGetPost1.txt
+TEST_FILE3=$GOPATH/src/tests/shortGetPost1.txt
 
 go run $WORKER_GO -port=$WORKER_PORT1 > "logs/worker1.log" &
 WORKER1_PID=$!

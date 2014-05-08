@@ -12,25 +12,22 @@ import (
     "strings"
     "strconv"
     "errors"
+    "time"
 )
 //initialize flag variables
 var test string
-var time int
 func init() {
     const (
         //directory is added when opening file
         defaultTest = "basicGetPost.txt"
         usageTest = "--benchmark  -b : give benchmark files"
         defaultTime = 0
-        usageTime = "--time       -t : display timing information"
     )
     //for benchmark flags
     flag.StringVar(&test, "benchmark", defaultTest, usageTest)
     flag.StringVar(&test, "b", defaultTest, usageTest+ " (-b)")
 
     //for timing flags
-    flag.IntVar(&time, "time", defaultTime, usageTime)
-    flag.IntVar(&time, "t", defaultTime, usageTime+ " (-t)")
 }
 
 func checkError(err error) {
@@ -71,11 +68,13 @@ func dispPict(client client.RpiClient, local, store string) {
 }
 
 func sendReq(client client.RpiClient, requests []string) error {
+    totalRequestTime := int64(0)
     for i:=0; i<len(requests)-1; i++ {
         req := requests[i]
         //split on space " "
         fields := strings.Split(req," ")
         cmd := fields[0]
+        before := time.Now().UnixNano()
         switch cmd{
         case "HASH":
             //Parse the appropriate parameters of a compute job.
@@ -101,7 +100,12 @@ func sendReq(client client.RpiClient, requests []string) error {
             err := errors.New("Undefined request stream")
             return err
         }
+        after := time.Now().UnixNano()
+
+        totalRequestTime += (after - before) / int64(1000000)
     }
+    avgRequestTime := totalRequestTime / int64(len(requests))
+    fmt.Println("[CLIENT] Average request time (ms) :", avgRequestTime)
     return nil
 }
 
@@ -115,7 +119,6 @@ func main() {
     }
 
     fmt.Println("test file is ",test)
-    fmt.Println("time? ",time)
 
     //parse the input file specified
     data, ioErr := ioutil.ReadFile(test)

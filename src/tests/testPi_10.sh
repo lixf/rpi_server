@@ -9,25 +9,25 @@ echo "[TEST] CLIENT (run locally):"
 CLIENT_GO=$GOPATH/src/runners/crunner/crunner.go
 TESTS=$GOPATH/src/tests
 
-go run $CLIENT_GO -b=$TESTS/pure_pict_25.txt > $TESTS/logs/client1_pp25_10.log &
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_1.txt > $TESTS/logs/client1_pb25_10.log &
 CLIENT_PID1=$!
-go run $CLIENT_GO -b=$TESTS/pure_pict_25.txt > $TESTS/logs/client2_pp25_10.log &
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_2.txt > $TESTS/logs/client2_pb25_10.log &
 CLIENT_PID2=$!
-go run $CLIENT_GO -b=$TESTS/pure_pict_25.txt > $TESTS/logs/client3_pp25_10.log &
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_3.txt > $TESTS/logs/client3_pb25_10.log &
 CLIENT_PID3=$!
-go run $CLIENT_GO -b=$TESTS/pure_pict_25.txt > $TESTS/logs/client4_pp25_10.log &
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_4.txt > $TESTS/logs/client4_pb25_10.log &
 CLIENT_PID4=$!
-go run $CLIENT_GO -b=$TESTS/pure_pict_25.txt > $TESTS/logs/client5_pp25_10.log &
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_5.txt > $TESTS/logs/client5_pb25_10.log &
 CLIENT_PID5=$!
-go run $CLIENT_GO -b=$TESTS/pure_pict_25.txt > $TESTS/logs/client6_pp25_10.log &
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_6.txt > $TESTS/logs/client6_pb25_10.log &
 CLIENT_PID6=$!
-go run $CLIENT_GO -b=$TESTS/pure_pict_25.txt > $TESTS/logs/client7_pp25_10.log &
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_7.txt > $TESTS/logs/client7_pb25_10.log &
 CLIENT_PID7=$!
-go run $CLIENT_GO -b=$TESTS/pure_pict_25.txt > $TESTS/logs/client8_pp25_10.log &
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_8.txt > $TESTS/logs/client8_pb25_10.log &
 CLIENT_PID8=$!
-go run $CLIENT_GO -b=$TESTS/pure_pict_25.txt > $TESTS/logs/client9_pp25_10.log &
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_9.txt > $TESTS/logs/client9_pb25_10.log &
 CLIENT_PID9=$!
-go run $CLIENT_GO -b=$TESTS/pure_pict_25.txt > $TESTS/logs/clientx_pp25_10.log &
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_10.txt > $TESTS/logs/clientx_pb25_10.log &
 CLIENT_PID10=$!
 
 echo "[TEST] Waiting for client 1 to finish"
