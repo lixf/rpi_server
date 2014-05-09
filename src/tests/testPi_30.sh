@@ -49,6 +49,26 @@ go run $CLIENT_GO -b=$TESTS/pure_basic_25_9.txt > $TESTS/logs/client19_pb25_20.l
 CLIENT_PID19=$!
 go run $CLIENT_GO -b=$TESTS/pure_basic_25_10.txt > $TESTS/logs/client1x_pb25_20.log &
 CLIENT_PID20=$!
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_1.txt > $TESTS/logs/client21_pb25_20.log &
+CLIENT_PID21=$!
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_2.txt > $TESTS/logs/client22_pb25_20.log &
+CLIENT_PID22=$!
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_3.txt > $TESTS/logs/client23_pb25_20.log &
+CLIENT_PID23=$!
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_4.txt > $TESTS/logs/client24_pb25_20.log &
+CLIENT_PID24=$!
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_5.txt > $TESTS/logs/client25_pb25_20.log &
+CLIENT_PID25=$!
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_6.txt > $TESTS/logs/client26_pb25_20.log &
+CLIENT_PID26=$!
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_7.txt > $TESTS/logs/client27_pb25_20.log &
+CLIENT_PID27=$!
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_8.txt > $TESTS/logs/client28_pb25_20.log &
+CLIENT_PID28=$!
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_9.txt > $TESTS/logs/client29_pb25_20.log &
+CLIENT_PID29=$!
+go run $CLIENT_GO -b=$TESTS/pure_basic_25_10.txt > $TESTS/logs/client2x_pb25_20.log &
+CLIENT_PID20=$!
 
 echo "[TEST] Waiting for client 1 to finish"
 wait $CLIENT_PID01
